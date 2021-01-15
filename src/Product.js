@@ -4,27 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons'
 import { faStar as faStarReg} from '@fortawesome/free-regular-svg-icons'
 
-function Product() {
+function Product({ id, title, image, price, rating }) {
     return (
         <div className="product">
             <div className="product-info">
-                <p>The lean startup</p>
+                <p>{title}</p>
                 <p className="product-price">
                     <small>$</small>
-                    <strong>19.99</strong>
+                    <strong>{price}</strong>
                 </p>
                 <div className="product-rating">
-                    <FontAwesomeIcon className="star" icon={faStarSolid} />
-                    <FontAwesomeIcon className="star" icon={faStarSolid} />
-                    <FontAwesomeIcon className="star" icon={faStarSolid} />
-                    <FontAwesomeIcon className="star" icon={faStarSolid} />
-                    <FontAwesomeIcon className="star" icon={faStarReg} />
+                    {Array(rating)
+                        .fill()
+                        .map((_, i) => (
+                        <FontAwesomeIcon className="star" icon={faStarSolid} />
+                    ))}
                 </div>
-
-                <img />
-
-                <button>Add to basket</button>
             </div>
+
+            <img src={image} alt="" />
+
+            <button>Add to basket</button>
         </div>
     )
 }
