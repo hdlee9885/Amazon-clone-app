@@ -1,8 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Login.css'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { auth } from './firebase'
 
 function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const history = useHistory();
+
+    const signIn = e => {
+        e.preventDefault();
+        // firebase login here
+        auth
+            .signInWithEmailAndPassword(email, password)
+            .then(auth => {
+                // successfully signed in
+                history.push('/')
+            }).catch(err => alert(err.message))
+
+    } 
+
+    const register = e => {
+        e.preventDefault();
+        // firebase register here
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((auth) => {
+                // successfully signed up
+                console.log(auth)
+                if (auth) {
+                    // redirect when signed up
+                    history.push('/')
+                }
+            }).catch(err => alert(err.message))
+    } 
+
     return (
         <div className="login">
             <Link to="/">
@@ -17,12 +49,23 @@ function Login() {
 
                 <form>
                     <h5>E-mail</h5>
-                    <input type='text' />
+                    <input type='text' 
+                            value={email} 
+                            onChange={e => setEmail(e.target.value)} 
+                    />
 
                     <h5>Password</h5>
-                    <input type='password' />
+                    <input type='password' 
+                            value={password} 
+                            onChange={e => setPassword(e.target.value)}
+                    />
 
-                    <button type='submit' className='login-signInButton'>Sign In</button>
+                    <button 
+                        type='submit' 
+                        onClick={signIn}
+                        className='login-signInButton'>
+                        Sign In
+                    </button>
                 </form>
 
                 <p>
@@ -30,7 +73,11 @@ function Login() {
                     see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
                 </p>
 
-                <button className="login-register">Create your account</button>
+                <button 
+                    onClick={register}
+                    className="login-register">
+                    Create your account
+                </button>
             </div>
 
         </div>
