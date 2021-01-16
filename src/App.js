@@ -13,7 +13,6 @@ function App() {
                     <Route path="/checkout">
                         <Header />
                         <Checkout />
-                        <h1>Hi</h1>
                     </Route>
 
                     <Route path="/">
