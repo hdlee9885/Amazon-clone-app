@@ -33,7 +33,9 @@ function CheckoutProduct({ id, image, title, price, rating }) {
                             <FontAwesomeIcon className="star" icon={faStarSolid} />
                         ))}
                 </div>
-                <button onClick={removeFromBasket}>Remove from basket</button>
+                <button onClick={removeFromBasket}>
+                    <span className="checkoutProduct-remove">Remove from basket</span>
+                </button>
             </div>
         </div>
     )
