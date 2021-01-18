@@ -11,6 +11,7 @@ import Payment from './Payment';
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import Orders from './Orders';
+import Helmet from 'react-helmet'
 
 const promise = loadStripe(
     "pk_test_51IAU7vFP8FWrVSGdSz4q0ok9dSUMTXHdeQW1XVgsvHNLXjmPd6eyfonloWna3w2EbdARTzpWXdS5QqjSIaWQC9g800Uw8L6Syr"
@@ -46,6 +47,10 @@ function App() {
     return (
         <Router>
             <div className="app">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Amazon Clone</title>
+                </Helmet>
                 <Switch>
                     <Route path="/login">
                         <Login />
