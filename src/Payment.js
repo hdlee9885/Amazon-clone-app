@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import './Payment.css'
-import { useStateValue } from './StateProvider'
-import CheckoutProduct from './CheckoutProduct'
-import { Link } from 'react-router-dom';
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import CurrencyFormat from 'react-currency-format';
-import { calBasketTotal } from './reducer';
-import { useHistory } from 'react-router'
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import './Payment.css';
+import { useStateValue } from "./StateProvider";
+import CheckoutProduct from "./CheckoutProduct";
+import { Link, useHistory } from "react-router-dom";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import CurrencyFormat from "react-currency-format";
+import { calBasketTotal } from "./reducer";
+import axios from './axios';
 
 function Payment() {
     const [{ basket, user }, dispatch] = useStateValue();
+    const history = useHistory();
 
     const stripe = useStripe();
     const elements = useElements();
-    const history = useHistory();
 
+    const [succeeded, setSucceeded] = useState(false);
+    const [processing, setProcessing] = useState("");
     const [error, setError] = useState(null);
     const [disabled, setDisabled] = useState(true);
-    const [processing, setProcessing] = useState("");
-    const [succeeded, setSucceeded] = useState(false);
     const [clientSecret, setClientSecret] = useState(true);
 
     useEffect(() => {
-        // generate stripe secret which allows us to charge a customer
+        // generate the special stripe secret which allows us to charge a customer
         const getClientSecret = async () => {
             const response = await axios({
                 method: 'post',
@@ -32,6 +31,7 @@ function Payment() {
             });
             setClientSecret(response.data.clientSecret)
         }
+
         getClientSecret();
     }, [basket])
 
@@ -49,6 +49,11 @@ function Payment() {
             setSucceeded(true);
             setError(null);
             setProcessing(false);
+
+            dispatch({
+                type: 'EMPTY_CART',
+            })
+
             history.replace('/orders');
         })
     }

@@ -1,7 +1,9 @@
 const functions = require("firebase-functions");
-const express = require('express');
-const cors = require('cors');
-const stripe = require('stripe')('sk_test_51IAU7vFP8FWrVSGd3gEZBzfG4BjyFPHNYNgQ6JI7Iwf2JPp2neeOzIojl1OANNLh5PizNtqNcMbbY9gqD17vuMRC00eKC8hhRJ');
+const express = require("express");
+const cors = require("cors");
+const stripe = require("stripe")(
+  "sk_test_51IAU7vFP8FWrVSGd3gEZBzfG4BjyFPHNYNgQ6JI7Iwf2JPp2neeOzIojl1OANNLh5PizNtqNcMbbY9gqD17vuMRC00eKC8hhRJ"
+);
 
 // API
 
@@ -14,8 +16,6 @@ app.use(express.json());
 
 // - API routes
 app.get("/", (request, response) => response.status(200).send("Hello world"));
-
-app.get("/", (req, res) => res.status(200).send(client))
 
 app.post("/payments/create", async (request, response) => {
   const total = request.query.total;
@@ -35,13 +35,3 @@ app.post("/payments/create", async (request, response) => {
 
 // - Listen command
 exports.api = functions.https.onRequest(app);
-
-// API endpoint http://localhost:5001/ama-clone-9885/us-central1/api
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
