@@ -28,12 +28,14 @@ function Payment() {
             const response = await axios({
                 method: 'post',
                 // stripe expects the total in a currencies subunits
-                url: `/payments/create?total=${calBasketTotal(basket) * 100}`,
-            })
+                url: `/payments/create?total=${calBasketTotal(basket) * 100}`
+            });
             setClientSecret(response.data.clientSecret)
         }
         getClientSecret();
     }, [basket])
+
+    console.log('>>>>>>>>', clientSecret)
 
     const handlePayment = async (e) => {
         e.preventDefault();
