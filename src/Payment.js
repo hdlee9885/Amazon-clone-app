@@ -6,13 +6,15 @@ import { Link } from 'react-router-dom';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import CurrencyFormat from 'react-currency-format';
 import { calBasketTotal } from './reducer';
+import { useHistory } from 'react-router'
 import axios from 'axios';
 
 function Payment() {
     const [{ basket, user }, dispatch] = useStateValue();
 
     const stripe = useStripe();
-    const element = useElements();
+    const elements = useElements();
+    const history = useHistory();
 
     const [error, setError] = useState(null);
     const [disabled, setDisabled] = useState(true);
@@ -33,10 +35,20 @@ function Payment() {
         getClientSecret();
     }, [basket])
 
-    const handlePayment = (e) => {
+    const handlePayment = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        // const payload = await stripe 
+        const payload = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: elements.getElement(CardElement),
+            }
+        }).then(( { paymentIntent }) => {
+            // paymentIntent => payment confirmation
+            setSucceeded(true);
+            setError(null);
+            setProcessing(false);
+            history.replace('/orders');
+        })
     }
 
     const handlePaymentChange = (e) => {
@@ -111,6 +123,9 @@ function Payment() {
                                     </span>
                                 </button>
                             </div>
+
+                            {/* error */}
+                            {error && <div>{error}</div>}
                         </form>    
                     </div>
                 </div>

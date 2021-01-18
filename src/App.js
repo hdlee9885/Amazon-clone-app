@@ -59,6 +59,9 @@ function App() {
                             <Payment />
                         </Elements>
                     </Route>
+                    <Route path="/orders">
+                        <Header />
+                    </Route>
 
                     <Route path="/">
                         <Header />
